@@ -138,7 +138,7 @@ backspace_lenght = 0
 def on_press(key):
     global current_dir, ctrl_pressed, c_pressed, shift_pressed, alt_pressed, last_word, programmatic_press, clear_the_word_at_next_symbol, backspace_lenght
     try:
-        logging.info(f"Нажата клавиша: {key} {clear_the_word_at_next_symbol}")
+        logging.info(f"Нажата клавиша: {key}")
         if key.char.isalnum() and programmatic_press == False and ctrl_pressed == False and alt_pressed == False:
             if clear_the_word_at_next_symbol == True or (last_word and (last_word[-1] == " " or last_word[-1] == "\n")):
                 last_word = ""
@@ -198,12 +198,9 @@ def on_press(key):
             shift_pressed = True
 
     logging.info(f"shift_alt_ctrl_pressed: {shift_pressed} {alt_pressed} {ctrl_pressed}")
-    
-    # Получаем текущую раскладку
-    current_layout = get_current_layout()
 
     
-    if ctrl_pressed and alt_pressed:
+    if ctrl_pressed and alt_pressed and last_word:
         print(f"Стираем и снова вводим слово: {key} {last_word}")
         keyboard_controller.release(Key.ctrl_l)
         keyboard_controller.release(Key.ctrl_r)
@@ -228,6 +225,8 @@ def on_press(key):
         temp_word = last_word
         clear_the_word_at_next_symbol = True
         
+        # Получаем текущую раскладку
+        current_layout = get_current_layout()
         logging.info(f"Текущая раскладка: {current_layout}")
             
         keyboard_controller.release(Key.ctrl_l)
