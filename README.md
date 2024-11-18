@@ -1,8 +1,14 @@
+```
 sudo visudo
+```
 в конец файлов добавить
+```
 user ALL=(ALL) NOPASSWD: ALL
-
+```
+```
 sudo nano /etc/systemd/system/keyboard_layout_switcher.service
+```
+```
 [Unit]
 Description=Keyboard Layout Switcher
 After=display-manager.service
@@ -17,4 +23,4 @@ User=user
 
 [Install]
 WantedBy=multi-user.target
-
+```
