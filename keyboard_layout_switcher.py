@@ -198,9 +198,12 @@ def on_press(key):
             shift_pressed = True
 
     logging.info(f"shift_alt_ctrl_pressed: {shift_pressed} {alt_pressed} {ctrl_pressed}")
+    
+    # Получаем текущую раскладку
+    current_layout = get_current_layout()
 
     
-    if ctrl_pressed and alt_pressed and last_word:
+    if ctrl_pressed and alt_pressed:
         print(f"Стираем и снова вводим слово: {key} {last_word}")
         keyboard_controller.release(Key.ctrl_l)
         keyboard_controller.release(Key.ctrl_r)
@@ -225,8 +228,6 @@ def on_press(key):
         temp_word = last_word
         clear_the_word_at_next_symbol = True
         
-        # Получаем текущую раскладку
-        current_layout = get_current_layout()
         logging.info(f"Текущая раскладка: {current_layout}")
             
         keyboard_controller.release(Key.ctrl_l)
