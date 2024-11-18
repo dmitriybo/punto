@@ -15,7 +15,7 @@ After=display-manager.service
 
 [Service]
 ExecStartPre=/bin/sleep 8
-ExecStart=/usr/bin/python3 /home/user/keyboard_layout_switcher.py
+ExecStart=/usr/bin/python3 /home/user/punto/keyboard_layout_switcher.py
 Environment="DISPLAY=:0"
 Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
 Restart=always

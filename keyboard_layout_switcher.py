@@ -8,12 +8,14 @@ import os
 import threading
 import logging
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Настройка логирования
 logging.basicConfig(
     level=logging.DEBUG,  # Уровень логирования (DEBUG, INFO, WARNING, ERROR, CRITICAL)
     format='%(message)s',  # Формат логов
     handlers=[
-        logging.FileHandler('/home/user/app.log'),  # Логирование в файл
+        logging.FileHandler(os.path.join(current_dir, "app.log")),  # Логирование в файл
         logging.StreamHandler()  # Логирование в консоль
     ]
 )
@@ -134,9 +136,9 @@ clear_the_word_at_next_symbol = False
 backspace_lenght = 0
 
 def on_press(key):
-    global ctrl_pressed, c_pressed, shift_pressed, alt_pressed, last_word, programmatic_press, clear_the_word_at_next_symbol, backspace_lenght
+    global current_dir, ctrl_pressed, c_pressed, shift_pressed, alt_pressed, last_word, programmatic_press, clear_the_word_at_next_symbol, backspace_lenght
     try:
-        logging.info(f"Нажата клавиша: {key.char} {key}")
+        logging.info(f"Нажата клавиша: {key} {clear_the_word_at_next_symbol}")
         if key.char.isalnum() and programmatic_press == False and ctrl_pressed == False and alt_pressed == False:
             if clear_the_word_at_next_symbol == True or (last_word and (last_word[-1] == " " or last_word[-1] == "\n")):
                 last_word = ""
@@ -162,9 +164,10 @@ def on_press(key):
                     backspace_lenght = 0
                 print(f"backspace_lenght: {backspace_lenght}")
                 if backspace_lenght == 0:
+                    clear_the_word_at_next_symbol = True
                     if prev_backspace_lenght == 0:
                         last_word = last_word[:-1] if last_word else last_word
-                    clear_the_word_at_next_symbol = False
+                        clear_the_word_at_next_symbol = False
                     last_word = last_word.rstrip('\n')
             
     logging.info(f"last_word: |{last_word}|")
@@ -209,9 +212,7 @@ def on_press(key):
             keyboard_controller.press(Key.backspace)
             keyboard_controller.release(Key.backspace)
         
-        # Путь к домашней директории и скрипту
-        home_dir = '/home/user/'
-        script_path = os.path.join(home_dir, "switch_layout.sh")
+        script_path = os.path.join(current_dir, "switch_layout.sh")
         
         # Запуск скрипта для переключения раскладки
         try:
@@ -245,10 +246,8 @@ def on_press(key):
     if shift_pressed and alt_pressed:
         last_word = ""
         logging.info("Нажаты Shift и Alt, запускаем скрипт switch_layout.sh...")
-        # Получаем путь к домашней директории пользователя
-        home_dir = '/home/user/'
         # Путь к скрипту
-        script_path = os.path.join(home_dir, "switch_layout.sh")
+        script_path = os.path.join(current_dir, "switch_layout.sh")
         
         try:
             # Запускаем скрипт
